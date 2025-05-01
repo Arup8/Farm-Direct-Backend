@@ -35,8 +35,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(helmet());
 app.use(cors({
+  // Allow connections from all Expo clients
   origin: process.env.NODE_ENV === 'development' 
-    ? 'http://localhost:3000' 
+    ? ['http://localhost:3000', 'http://localhost:19006', 'exp://*', 'http://10.0.2.2:19000']
     : process.env.FRONTEND_URL,
   credentials: true
 }));
