@@ -1,0 +1,803 @@
+{
+  "info": {
+    "name": "Farm Direct API",
+    "description": "A collection for testing the Farm Direct application API endpoints",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Test User\",\n  \"email\": \"test@example.com\",\n  \"password\": \"password123\",\n  \"role\": \"customer\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "auth", "register"]
+            },
+            "description": "Register a new user"
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"test@example.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "auth", "login"]
+            },
+            "description": "Login with email and password"
+          }
+        },
+        {
+          "name": "Get Current User",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "auth", "me"]
+            },
+            "description": "Get current logged in user details"
+          }
+        },
+        {
+          "name": "Update Details",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated Name\",\n  \"email\": \"updated@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "auth", "me"]
+            },
+            "description": "Update current user details"
+          }
+        },
+        {
+          "name": "Forgot Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"test@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/forgot-password",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "auth", "forgot-password"]
+            },
+            "description": "Request password reset token"
+          }
+        },
+        {
+          "name": "Reset Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"password\": \"newpassword123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/reset-password/:resetToken",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "auth", "reset-password", ":resetToken"],
+              "variable": [
+                {
+                  "key": "resetToken",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Reset password using token"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Products",
+      "item": [
+        {
+          "name": "Get All Products",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/products",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "products"],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "10",
+                  "disabled": true
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "disabled": true
+                },
+                {
+                  "key": "sort",
+                  "value": "price",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Get all products with pagination"
+          }
+        },
+        {
+          "name": "Get Single Product",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/products/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "products", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Get single product by ID"
+          }
+        },
+        {
+          "name": "Create Product",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "Product Name",
+                  "type": "text"
+                },
+                {
+                  "key": "description",
+                  "value": "Product description",
+                  "type": "text"
+                },
+                {
+                  "key": "price",
+                  "value": "29.99",
+                  "type": "text"
+                },
+                {
+                  "key": "category",
+                  "value": "vegetables",
+                  "type": "text"
+                },
+                {
+                  "key": "quantity",
+                  "value": "100",
+                  "type": "text"
+                },
+                {
+                  "key": "images",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/products",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "products"]
+            },
+            "description": "Create new product (seller only)"
+          }
+        },
+        {
+          "name": "Update Product",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "Updated Product Name",
+                  "type": "text"
+                },
+                {
+                  "key": "price",
+                  "value": "39.99",
+                  "type": "text"
+                },
+                {
+                  "key": "images",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/products/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "products", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Update product by ID (seller only)"
+          }
+        },
+        {
+          "name": "Delete Product",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/products/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "products", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Delete product by ID (seller only)"
+          }
+        },
+        {
+          "name": "Search Products",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/products/search",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "products", "search"],
+              "query": [
+                {
+                  "key": "keyword",
+                  "value": "organic"
+                },
+                {
+                  "key": "category",
+                  "value": "fruits",
+                  "disabled": true
+                },
+                {
+                  "key": "minPrice",
+                  "value": "10",
+                  "disabled": true
+                },
+                {
+                  "key": "maxPrice",
+                  "value": "50",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Search products by keyword, category, price range"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Cart",
+      "item": [
+        {
+          "name": "Get Cart",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/cart",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "cart"]
+            },
+            "description": "Get current user's cart"
+          }
+        },
+        {
+          "name": "Add To Cart",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productId\": \"product_id_here\",\n  \"quantity\": 2\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/cart",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "cart"]
+            },
+            "description": "Add item to cart"
+          }
+        },
+        {
+          "name": "Update Cart Item",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"quantity\": 5\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/cart/:productId",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "cart", ":productId"],
+              "variable": [
+                {
+                  "key": "productId",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Update item quantity in cart"
+          }
+        },
+        {
+          "name": "Remove From Cart",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/cart/:productId",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "cart", ":productId"],
+              "variable": [
+                {
+                  "key": "productId",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Remove item from cart"
+          }
+        },
+        {
+          "name": "Clear Cart",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/cart",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "cart"]
+            },
+            "description": "Remove all items from cart"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Orders",
+      "item": [
+        {
+          "name": "Get All Orders",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/orders",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "orders"]
+            },
+            "description": "Get current user's orders"
+          }
+        },
+        {
+          "name": "Get Single Order",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/orders/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "orders", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Get order by ID"
+          }
+        },
+        {
+          "name": "Create Order",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"shippingAddress\": {\n    \"address\": \"123 Main St\",\n    \"city\": \"New York\",\n    \"postalCode\": \"10001\",\n    \"country\": \"USA\"\n  },\n  \"paymentMethod\": \"card\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/orders",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "orders"]
+            },
+            "description": "Create a new order from cart items"
+          }
+        },
+        {
+          "name": "Update Order Status",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"shipped\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/orders/:id/status",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "orders", ":id", "status"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Update order status (seller only)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Payments",
+      "item": [
+        {
+          "name": "Create Payment Order",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"orderId\": \"order_id_here\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/payments/order",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "payments", "order"]
+            },
+            "description": "Create payment order"
+          }
+        },
+        {
+          "name": "Verify Payment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"paymentId\": \"payment_id_here\",\n  \"orderId\": \"order_id_here\",\n  \"signature\": \"signature_here\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/payments/verify",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "payments", "verify"]
+            },
+            "description": "Verify payment"
+          }
+        },
+        {
+          "name": "Process Refund",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"orderId\": \"order_id_here\",\n  \"reason\": \"Item not as described\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/payments/refund",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "payments", "refund"]
+            },
+            "description": "Request refund for an order"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Reviews",
+      "item": [
+        {
+          "name": "Get Product Reviews",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/products/:productId/reviews",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "products", ":productId", "reviews"],
+              "variable": [
+                {
+                  "key": "productId",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Get all reviews for a product"
+          }
+        },
+        {
+          "name": "Add Review",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rating\": 5,\n  \"comment\": \"Great product, very fresh!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/products/:productId/reviews",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "products", ":productId", "reviews"],
+              "variable": [
+                {
+                  "key": "productId",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Add a review for a product"
+          }
+        },
+        {
+          "name": "Update Review",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rating\": 4,\n  \"comment\": \"Updated review comment\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/reviews/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "reviews", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Update a review"
+          }
+        },
+        {
+          "name": "Delete Review",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/reviews/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "reviews", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Delete a review"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Notifications",
+      "item": [
+        {
+          "name": "Get All Notifications",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/notifications",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "notifications"]
+            },
+            "description": "Get user's notifications"
+          }
+        },
+        {
+          "name": "Send Notification",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"recipient\": \"user_id_here\",\n  \"title\": \"New offer!\",\n  \"message\": \"Check out our new seasonal products\",\n  \"type\": \"promotion\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/notifications",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "notifications"]
+            },
+            "description": "Send notification to a user (admin only)"
+          }
+        },
+        {
+          "name": "Mark As Read",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/notifications/:id/read",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "notifications", ":id", "read"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Mark a notification as read"
+          }
+        },
+        {
+          "name": "Delete All Notifications",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/notifications",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "notifications"]
+            },
+            "description": "Delete all user notifications"
+          }
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000",
+      "type": "string"
+    }
+  ]
+} 
