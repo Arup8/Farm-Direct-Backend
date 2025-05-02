@@ -316,4 +316,23 @@ export const updateProfileImage = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
+};
+
+// @desc    Get all sellers
+// @route   GET /api/v1/auth/sellers
+// @access  Public
+export const getSellers = async (req, res, next) => {
+  try {
+    const sellers = await User.find({ role: 'seller' })
+      .select('name email image')
+      .sort('name');
+    
+    res.status(200).json({
+      success: true,
+      count: sellers.length,
+      data: sellers
+    });
+  } catch (error) {
+    next(error);
+  }
 }; 

@@ -4,7 +4,8 @@ import {
   getChat, 
   createChat, 
   sendMessage, 
-  respondToBargain 
+  respondToBargain,
+  getAIResponse
 } from '../controllers/chatController.js';
 import { protect } from '../middlewares/auth.js';
 
@@ -16,6 +17,9 @@ router.use(protect);
 router.route('/')
   .get(getChats)
   .post(createChat);
+
+router.route('/ai-response')
+  .post(getAIResponse);
 
 router.route('/:id')
   .get(getChat);

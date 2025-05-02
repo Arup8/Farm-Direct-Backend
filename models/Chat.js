@@ -1,5 +1,40 @@
 import mongoose from 'mongoose';
 
+// Add index initialization function
+const ensureIndexes = async () => {
+  try {
+    const Chat = mongoose.model('Chat');
+    
+    // Check if we need to update indexes
+    const indexes = await Chat.collection.getIndexes();
+    const hasCorrectIndex = indexes['participants.0_1_participants.1_1'];
+    
+    if (!hasCorrectIndex) {
+      console.log('🔄 Updating chat indexes...');
+      
+      // Drop any existing participants indexes
+      for (const indexName in indexes) {
+        if (indexName.startsWith('participants')) {
+          await Chat.collection.dropIndex(indexName).catch(() => {});
+        }
+      }
+      
+      // Create the new compound index
+      await Chat.collection.createIndex(
+        { 'participants.0': 1, 'participants.1': 1 },
+        { 
+          unique: true,
+          background: true // Allow index creation in background
+        }
+      );
+      
+      console.log('✅ Chat indexes updated successfully');
+    }
+  } catch (error) {
+    console.error('Error updating chat indexes:', error);
+  }
+};
+
 const MessageSchema = new mongoose.Schema({
   sender: {
     type: mongoose.Schema.Types.ObjectId,
@@ -12,6 +47,10 @@ const MessageSchema = new mongoose.Schema({
     trim: true
   },
   isBargain: {
+    type: Boolean,
+    default: false
+  },
+  isAIMessage: {
     type: Boolean,
     default: false
   },
@@ -28,6 +67,10 @@ const MessageSchema = new mongoose.Schema({
       default: 'pending'
     }
   },
+  readBy: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  }],
   readAt: Date,
   createdAt: {
     type: Date,
@@ -66,9 +109,6 @@ ChatSchema.path('participants').validate(function(participants) {
   return participants.length === 2;
 }, 'Chat must have exactly 2 participants');
 
-// Ensure unique chats between same participants
-ChatSchema.index({ participants: 1 }, { unique: true });
-
 // Update updatedAt timestamp on save
 ChatSchema.pre('save', function(next) {
   this.updatedAt = Date.now();
@@ -103,5 +143,8 @@ ChatSchema.pre(/^find/, function(next) {
 });
 
 const Chat = mongoose.model('Chat', ChatSchema);
+
+// Call ensureIndexes when the model is first loaded
+ensureIndexes().catch(console.error);
 
 export default Chat; 

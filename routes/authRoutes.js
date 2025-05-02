@@ -8,7 +8,8 @@ import {
   updatePassword, 
   forgotPassword, 
   resetPassword,
-  updateProfileImage
+  updateProfileImage,
+  getSellers
 } from '../controllers/authController.js';
 import { protect } from '../middlewares/auth.js';
 import { uploadSingleImage } from '../middlewares/uploadMiddleware.js';
@@ -20,6 +21,7 @@ router.post('/register', register);
 router.post('/login', login);
 router.post('/forgotpassword', forgotPassword);
 router.put('/resetpassword/:resettoken', resetPassword);
+router.get('/sellers', getSellers);
 
 // Protected routes
 router.get('/logout', protect, logout);

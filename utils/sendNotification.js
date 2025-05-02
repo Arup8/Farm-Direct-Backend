@@ -32,17 +32,40 @@ export const sendNotification = async (notificationData) => {
       throw new Error('Title and body are required');
     }
     
-    // Create the notification in the database
-    const notification = await Notification.create({
-      recipient: recipientId,
-      sender: senderId,
-      title,
-      body,
-      type,
-      data,
-      scheduledFor,
-      delivered: false, // Will be updated when push is sent
-    });
+    // Make sure we have clean string IDs, not objects
+    const recipientIdString = recipientId.toString();
+    const senderIdString = senderId ? senderId.toString() : undefined;
+    
+    console.log('Sending notification to recipient:', recipientIdString);
+    if (senderIdString) {
+      console.log('From sender:', senderIdString);
+    }
+    
+    try {
+      // Create the notification in the database
+      const notification = await Notification.create({
+        recipient: recipientIdString,
+        sender: senderIdString,
+        title,
+        body,
+        type,
+        data,
+        scheduledFor,
+        delivered: false, // Will be updated when push is sent
+      });
+      
+      return notification;
+    } catch (dbError) {
+      console.error('Database error creating notification:', dbError);
+      if (dbError.name === 'ValidationError' || dbError.name === 'CastError') {
+        console.error('Validation error details:', {
+          recipientId: recipientIdString,
+          senderId: senderIdString,
+          type
+        });
+      }
+      throw dbError;
+    }
     
     // For now we're just storing the notification in the database
     // In a production app, you would integrate with a push notification service
@@ -85,8 +108,6 @@ export const sendNotification = async (notificationData) => {
       }
     }
     */
-    
-    return notification;
   } catch (error) {
     console.error('Error sending notification:', error);
     throw error;

@@ -34,6 +34,14 @@ export const getProducts = async (req, res, next) => {
     if (req.query.rating) {
       query.rating = { $gte: Number(req.query.rating) };
     }
+
+    // Handle search term
+    if (req.query.search) {
+      query.$or = [
+        { name: { $regex: req.query.search, $options: 'i' } },
+        { description: { $regex: req.query.search, $options: 'i' } }
+      ];
+    }
     
     // Handle pagination
     const page = parseInt(req.query.page, 10) || 1;

@@ -14,6 +14,7 @@ import {
   chatRoutes, 
   notificationRoutes 
 } from './routes/index.js';
+import { initializeAIUser } from './utils/initAI.js';
 
 // Load environment variables
 
@@ -84,8 +85,17 @@ app.use((err, req, res, next) => {
 
 // Start server
 const PORT = process.env.PORT || 5000;
-const server = app.listen(PORT, () => {
+const server = app.listen(PORT, async () => {
   console.log(`🛠️  Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
+  
+  // Initialize AI user after server is started
+  try {
+    await initializeAIUser();
+    console.log('🤖 AI assistant initialized and ready to handle chats');
+  } catch (error) {
+    console.error('⚠️ AI assistant initialization failed:', error.message);
+    console.log('AI chat features may be limited');
+  }
 });
 
 // Handle unhandled promise rejections
